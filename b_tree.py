@@ -64,6 +64,33 @@ class Solution:
             self.Mirror(root.right)
         return root
 
+    def printit(self, root):
+        '''
+        从上到下，逐行打印
+        '''
+        if not root:
+            return []
+        from collections import defaultdict
+        res=defaultdict(list)
+        fuck_res=[]
+        def _(r, i):
+            res[i].append(r.val)
+            if r.left:
+                _(r.left, i+1)
+            if r.right:
+                _(r.right, i+1)
+            return 
+        _(root,0)
+        for i in range(len(res)):#todo
+            # if not res.get(i):
+            #     print '=====done==='
+            #     break
+            print '\t'.join(map(str,res[i]))
+            fuck_res.extend(res[i])
+        return fuck_res
+
+
+
 if __name__ == '__main__':
     print '------------------start'
     def gen(ttype='single'):
@@ -83,7 +110,9 @@ if __name__ == '__main__':
     t=gen()
     print '------------------',t
 
-    mirror=Solution().Mirror(t)
-    mirror2=Solution().Mirror2(t)
-    print '--------',pre_run(mirror), mid_run(mirror)
-    print '--------',pre_run(mirror2), mid_run(mirror2)
+    # mirror=Solution().Mirror(t)
+    # mirror2=Solution().Mirror2(t)
+    # print '--------',pre_run(mirror), mid_run(mirror)
+    # print '--------',pre_run(mirror2), mid_run(mirror2)
+        
+    Solution().printit(t)
