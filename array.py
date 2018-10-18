@@ -1,5 +1,20 @@
 # -*- coding:utf-8 -*-
 import pdb
+
+def test_sort_array(func):
+    '''
+    装饰器,校验结果(不适用递归)
+    参数约定,第一个值为self,第二个为待排序列表
+    '''
+    def wrap(*args,**kw):
+        l=args[1][:]
+        l.sort()
+        res=func(*args,**kw)
+        print '------test',func.__name__,res,l
+        assert res==l, func.__name__
+        return res
+    return wrap
+
 class Solution:
     def GetNumberOfK(self, data, k):
         '''
@@ -182,6 +197,37 @@ class Solution:
         assert l==nl
         return l
 
+    @test_sort_array
+    def fast_sort(self,l):
+        '''
+        快速排序
+        将数列选取第一个值,分为比之大和小的两部分,递归直至完成所有划分
+        '''
+        if not l:
+            return []
+        v=l[0]
+        lt,gt=[],[]
+        for i in l[1:]:
+            if i>=v:
+                gt.append(i)
+            else:
+                lt.append(i)
+        return self.fast_sort(lt)+[v]+self.fast_sort(gt)
+
+    @test_sort_array
+    def select_sort(self,l):
+        '''
+        选择排序
+        从左到右,选出最小的,放在第0,1,2,...位置,直到便利完
+        '''
+        for i in range(len(l)):
+            min_i=i
+            for j in range(i,len(l)):
+                if l[j]<l[min_i]:
+                    min_i=j
+            l[i],l[min_i]=l[min_i],l[i]
+        return l
+
     def test_half_search(self):
         test=[
             (range(10),5,5),
@@ -193,9 +239,12 @@ class Solution:
             assert res==t[2],'<<<<%s--%s'%(res,t)
             print 'done',t
 
+
 if __name__=='__main__':
     s=Solution()
     unsort_list=[4,5,6,7,3,2,6,9,8]
+    s.select_sort(unsort_list)
+    print s.fast_sort(unsort_list)
     s.buble_sort(unsort_list)
     s.buble_sort(unsort_list,True)
     s.xier_sort(unsort_list)
