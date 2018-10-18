@@ -117,16 +117,24 @@ class Solution:
     def half_search2(self, data, k):
         '''
         二分查找,
-        返回所在index,不适合递归,适合判断是否在,以及个数
+        返回所在index,递归,适合判断是否在,以及个数
         '''
+
+        if not data:
+            return None
         data.sort()
 
-        def _(s_data,k):
-            if not s_data:
+        def _(data,k,s,e):
+            if not data[s:e]:
                 return None
-            mid=len(s_data)/2
-            #if s_data[mid]==
-            pass
+            mid=(s+e)/2
+            if data[mid]==k:
+                return mid
+            elif data[mid]>k:
+                return _(data,k,s,mid-1)
+            else:
+                return _(data,k,mid+1,e)
+        return _(data,k,0,len(data)-1)
 
     def sort_insert(self,l):
         '''
@@ -238,6 +246,10 @@ class Solution:
             res=self.half_search(t[0],t[1])
             assert res==t[2],'<<<<%s--%s'%(res,t)
             print 'done',t
+            res=self.half_search2(t[0],t[1])
+            assert res==t[2],'<<2<<%s--%s'%(res,t)
+            print 'done2',t
+
 
 
 if __name__=='__main__':
