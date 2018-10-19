@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+'''
+链表
+'''
 class ListNode:
     def __init__(self, x):
         self.val = x
@@ -50,6 +53,34 @@ class Solution:
             print now.next.val
             now=now.next
 
+    def val_list(self, head):
+        '''
+        提取链表元素
+        '''
+        if not head:
+            return []
+
+        l=[head.val]
+        while head.next:
+            head=head.next
+            l.append(head.val)
+
+        return l
+
+    def merge(self, head1, head2):
+        '''
+        输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+        '''
+        if not head1:
+            return head2
+        if not head2:
+            return head1
+
+        l1,l2=self.val_list(head1), self.val_list(head2)
+        l=l1+l2
+        l.sort()
+        return self.gen(l)
+
 
 if __name__=='__main__':
     s=Solution()
@@ -57,4 +88,8 @@ if __name__=='__main__':
     s.print_(raw)
     print '--------------------reverse'
     s.print_(s.ReverseList(raw))
-
+    print '--------------------merge'
+    raw2=s.gen(range(9,12))
+    s.print_(raw2)
+    print '--merge done'
+    s.print_(s.merge(raw,raw2))
